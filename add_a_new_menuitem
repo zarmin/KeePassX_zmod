@@ -1,0 +1,10 @@
+
+Add a new menu item (on item context menu)
+-------------------------------------------
+ 1. src/form/MainWindow.ui	Create a new xml node here!
+ 2. src/mainwindow.cpp		connect( ... ) function ( actionname => eventname )
+ 				eg: EditURLToClipboard => OnURLToClipboard
+ 3. src/mainwindow.cpp		EntryView->ContextMenu->addAction( ... )
+ 4. src/lib/EntryView.cpp	Write the function ( OnURLToClipboard )
+ 5. src/lib/EntryView.h		Write the functions prototype ( OnURLToClipboard)
+

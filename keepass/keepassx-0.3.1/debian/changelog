@@ -1,0 +1,66 @@
+keepassx (0.3.1-1) unstable; urgency=low
+
+  * Bug fix: "keepassx: Please use better watch file expression", thanks
+    to Roberto C. Sanchez (Closes: #474335).
+  * Bug fix: "New upstream version 0.3.0a", thanks to Felix Geyer (Closes:
+    #469391).
+  * minor cleanups in debian/rules for new upstream release.
+  * don't ignore make clean in clean target of debian rules. Thanks to
+    lintian.
+  * Bug fix: "Typo in keepass.desktop", thanks to Miguel Angel Ruiz
+    Manzano (Closes: #462103).
+  * Bug fix: "keepassx: not handling nostrip build option (policy 10.1)",
+    thanks to Julien Danjou (Closes: #437253).
+  * Bug fix: "keepassx: Fails to check if Passwort Repet. is correct for
+    new database", thanks to Benjamin Mesing (Closes: #467651). New
+    upstream release has totally reworked the new database dialog.
+  * update reference to GPL-2 in debian/copyright.
+  * Bump standard version to 3.7.2
+  * use Homepage header in debian/control
+  * The new upstream release has renamed the binary from keepass to
+    keepassx to match the project name. The desktopfile has been therfore
+    adapted.
+  * and of course, ack NMU, thanks Moritz (Closes: #455644)
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 05 Apr 2008 12:09:14 +0200
+
+keepassx (0.2.2-3.1) unstable; urgency=low
+
+  * Non-maintainer upload.
+  * Fix compatibility with GCC 4.3 (Closes: #455644)
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Tue, 18 Mar 2008 00:42:18 +0100
+
+keepassx (0.2.2-3) unstable; urgency=low
+
+  * add watch file
+  * Remove link to handbook from the help menu, There is no handbook in
+    the source. thanks to Don (Closes: #434979).
+  * Bug fix: "keepassx: "copy to clipboard" functions do not work in other
+    environments than kde", thanks to Gabor Burjan (Closes: #414171).
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 28 Jul 2007 15:49:26 +0200
+
+keepassx (0.2.2-2) unstable; urgency=low
+
+  * Upload to unstable
+  * Fix typo in package description. Thanks to Stefan Fritsch!
+  * Translate desktop file
+
+ -- Reinhard Tartler <siretart@tauware.de>  Sat, 10 Feb 2007 17:15:55 +0100
+
+keepassx (0.2.2-1) experimental; urgency=low
+
+  * cleanups to debian/rules
+  * upload to debian/experimental for now (Closes: #405896)
+  * small changes to description
+  * remove libstdc++6-4.0-dev from build-depends
+
+ -- Reinhard Tartler <siretart@tauware.de>  Mon,  8 Jan 2007 17:59:13 +0100
+
+keepassx (0.2.2-0ubuntu1) edgy; urgency=low
+
+  * Initial release
+
+ -- David Valot <ptitdav69@gmail.com>  Wed,  6 Sep 2006 21:07:02 +0200
+

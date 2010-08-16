@@ -1,0 +1,64 @@
+#!/usr/bin/make -f
+# -*- makefile -*-
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+CFLAGS = -Wall -g
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	qmake-qt4 PREFIX=/usr DEBUG=1 QMAKE_CFLAGS_DEBUG="$(CFLAGS)" \
+	     QMAKE_CXXFLAGS_DEBUG="$(CFLAGS)"
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	[ ! -f Makefile ] || $(MAKE) distclean
+	rm -rf src/Makefile Makefile
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	make INSTALL_ROOT=$(CURDIR)/debian/keepassx install
+        # Remove the executable attribut on png files
+	chmod 644 $(CURDIR)/debian/keepassx/usr/share/keepassx/icons/*.png
+        # desktop file and icon for KeePassX
+	cp $(CURDIR)/debian/keepass.desktop $(CURDIR)/debian/keepassx/usr/share/applications/
+	cp $(CURDIR)/debian/keepass.xpm $(CURDIR)/debian/keepassx/usr/share/pixmaps/
+
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs changelog
+	dh_installdocs
+	dh_installexamples
+	dh_installman debian/keepass.1
+	dh_desktop
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
