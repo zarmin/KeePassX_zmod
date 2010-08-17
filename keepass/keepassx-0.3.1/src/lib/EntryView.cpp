@@ -313,7 +313,7 @@ void KeepassEntryView::OnOpenFTP() {
 	SecString password = i->password();
 	password.unlock();
 
-	openBrowser( "cmd:///etc/alternatives/x-terminal-emulator -e \"mc 'ftp://"+i->username()+":"+password.string()+"@"+i->url()+"'\"" );
+	openBrowser( "cmd:///etc/alternatives/x-terminal-emulator -e \"mc 'ftp://"+i->username()+":"+password.string()+"@"+i->url()+"' '~'\"" );
 }
 
 void KeepassEntryView::OnClipboardTimeOut(){
