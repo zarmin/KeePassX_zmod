@@ -49,6 +49,7 @@ public:
 			virtual void setImage(const quint32& ImageID);
 			void setOldImage(const quint32& OldImgID);
 			virtual void setTitle(const QString& Title);
+			virtual void setSearchPath(const QString& SearchPath);
 			virtual void setUrl(const QString& URL);
 			virtual void setUsername(const QString& Username);
 			virtual void setPassword(const SecString& Password);
@@ -67,6 +68,7 @@ public:
 			virtual void setVisualIndexDirectly(int i);
 			quint32 oldImage();
 			virtual QString title();
+			virtual QString searchPath();
 			virtual QString url();
 			virtual QString username();
 			virtual SecString password();

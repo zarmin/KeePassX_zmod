@@ -88,7 +88,7 @@ KeepassMainWindow::KeepassMainWindow(const QString& ArgFile,bool ArgMin,bool Arg
 	LockedCentralWidget->setVisible(false);
 
 	setupConnections();
-	
+
 	inactivityTimer = new QTimer(this);
 	inactivityTimer->setInterval(500);
 	connect(inactivityTimer, SIGNAL(timeout()), SLOT(OnInactivityTimer()));
@@ -126,7 +126,7 @@ KeepassMainWindow::KeepassMainWindow(const QString& ArgFile,bool ArgMin,bool Arg
 	HelpBrowser->setArguments(QStringList()<< "-profile" << "share/keepass/doc/keepassx.adp");*/
 
 	createBookmarkActions();
-	
+
 	if (showWindow)
 		show();
 	else if (!config->showSysTrayIcon())
@@ -286,7 +286,7 @@ void KeepassMainWindow::setupMenus(){
     EntryView->ContextMenu->addAction(EditPasswordToClipboardAction);
 	EntryView->ContextMenu->addAction(EditURLToClipboardAction);
     EntryView->ContextMenu->addAction(EditOpenUrlAction);
-    
+
 	EntryView->ContextMenu->addAction(OpenSSH);
 	EntryView->ContextMenu->addAction(OpenFTP);
 
@@ -413,7 +413,7 @@ bool KeepassMainWindow::openDatabase(QString filename,bool IsAuto){
 		unlockDlg = NULL;
 	if (rejected)
 		return false;
-	
+
 	if(dlg.selectedBookmark()!=QString())
 		filename=dlg.selectedBookmark();
 
@@ -461,7 +461,7 @@ void KeepassMainWindow::fakeOpenDatabase(const QString& filename){
 				,tr("The database file does not exist."));
 		return;
 	}
-	
+
 	config->setLastFile(filename);
 	currentFile = filename;
 	setLock();
@@ -513,8 +513,8 @@ void KeepassMainWindow::OnFileNewKdb(){
 			if(!closeDatabase())return;
 		if (IsLocked)
 			resetLock();
-		db=db_new;		
-		db->setKey(dlg.password(),dlg.keyFile());		
+		db=db_new;
+		db->setKey(dlg.password(),dlg.keyFile());
 		setWindowTitle(QString("[%1][*] - KeePassX").arg(tr("new")));
 		GroupView->db=db;
 		EntryView->db=db;
@@ -575,7 +575,7 @@ void KeepassMainWindow::setStateFileOpen(bool IsOpen){
 	ExtrasShowExpiredEntriesAction->setEnabled(IsOpen);
 	AddThisAsBookmarkAction->setEnabled(IsOpen);
 	FileUnLockWorkspaceAction->setEnabled(IsOpen||IsLocked);
-	
+
 	if(!IsOpen){
 		EditNewGroupAction->setEnabled(false);
 		EditEditGroupAction->setEnabled(false);
@@ -962,7 +962,7 @@ void KeepassMainWindow::closeEvent(QCloseEvent* e){
 		hide();
 		return;
 	}
-	
+
 #ifdef GLOBAL_AUTOTYPE
 	AutoType::unregisterGlobalShortcut();
 #endif
@@ -1003,7 +1003,7 @@ void KeepassMainWindow::hideEvent(QHideEvent* event){
 			return;
 		}
 	}
-	
+
 	QMainWindow::hideEvent(event);
 }
 
@@ -1012,18 +1012,18 @@ void KeepassMainWindow::showEvent(QShowEvent* event){
 		showNormal(); // workaround for some graphic glitches
 		OnUnLockWorkspace();
 	}
-	
+
 	QMainWindow::showEvent(event);
 }
 
 void KeepassMainWindow::OnExtrasSettings(){
 	CSettingsDlg dlg(this);
 	dlg.exec();
-	
+
 	EntryView->setAlternatingRowColors(config->alternatingRowColors());
 	SysTray->setVisible(config->showSysTrayIcon());
 	menuBookmarks->menuAction()->setVisible(config->featureBookmarks());
-	
+
 	EventOccurred = true;
 	if (config->lockOnInactivity() && config->lockAfterSec()!=0 && !inactivityTimer->isActive()){
 		inactivityCounter = 0;
@@ -1202,7 +1202,7 @@ void KeepassMainWindow::OnUnLockWorkspace(){
 				lockGroup.prepend(parent->indexOfChild(item));
 			item = parent;
 		}
-		
+
 		if (closeDatabase(true))
 			setLock();
 		else
@@ -1242,12 +1242,12 @@ void KeepassMainWindow::resetLock(){
 void KeepassMainWindow::OnInactivityTimer(){
 	if (IsLocked || !FileOpen)
 		return;
-	
+
 	if (QApplication::activeModalWidget()!=NULL || EventOccurredBlock){
 		inactivityCounter = 0;
 		return;
 	}
-	
+
 	if (EventOccurred){
 		inactivityCounter = 0;
 		EventOccurred = false;

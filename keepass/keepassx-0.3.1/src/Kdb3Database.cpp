@@ -732,7 +732,7 @@ bool Kdb3Database::setKey(const QString& password,const QString& keyfile){
 		return setPasswordKey(password);
 	if(!keyfile.isEmpty())
 		return setFileKey(keyfile);
-	assert(false);	
+	assert(false);
 }
 
 bool Kdb3Database::setPasswordKey(const QString& Password){
@@ -912,6 +912,7 @@ Kdb3Database::StdGroup::StdGroup(const CGroup& other){
 }
 
 void Kdb3Database::EntryHandle::setTitle(const QString& Title){Entry->Title=Title; }
+void Kdb3Database::EntryHandle::setSearchPath(const QString& SearchPath){Entry->SearchPath=SearchPath; }
 void Kdb3Database::EntryHandle::setUsername(const QString& Username){Entry->Username=Username;}
 void Kdb3Database::EntryHandle::setUrl(const QString& Url){Entry->Url=Url;}
 void Kdb3Database::EntryHandle::setPassword(const SecString& Password){Entry->Password=Password;}
@@ -929,6 +930,7 @@ IGroupHandle* Kdb3Database::EntryHandle::group(){return Entry->Group->Handle;}
 quint32	Kdb3Database::EntryHandle::image(){return Entry->Image;}
 quint32	Kdb3Database::EntryHandle::oldImage(){return Entry->OldImage;}
 QString	Kdb3Database::EntryHandle::title(){return Entry->Title;}
+QString	Kdb3Database::EntryHandle::searchPath(){return Entry->SearchPath;}
 QString	Kdb3Database::EntryHandle::url(){return Entry->Url;}
 QString	Kdb3Database::EntryHandle::username(){return Entry->Username;}
 SecString Kdb3Database::EntryHandle::password(){return Entry->Password;}
@@ -1243,7 +1245,7 @@ bool Kdb3Database::save(){
 	if(!File->resize(EncryptedPartSize+DB_HEADER_SIZE)){
 		delete [] buffer;
 		error=decodeFileError(File->error());
-		return false;	
+		return false;
 	}
 	File->seek(0);
 	if(File->write(buffer,EncryptedPartSize+DB_HEADER_SIZE)!=EncryptedPartSize+DB_HEADER_SIZE){
@@ -1580,7 +1582,7 @@ bool Kdb3Database::searchStringContains(const QString& search, const QString& st
 }
 
 void Kdb3Database::getEntriesRecursive(IGroupHandle* Group, QList<IEntryHandle*>& EntryList){
-	EntryList<<entries(Group);
+	EntryList<<entries( Group );
 	for(int i=0;i<((GroupHandle*)Group)->Group->Childs.size();	i++){
 		getEntriesRecursive(((GroupHandle*)Group)->Group->Childs[i]->Handle,EntryList);
 	}
@@ -1599,7 +1601,17 @@ QList<IEntryHandle*> Kdb3Database::search(IGroupHandle* Group,const QString& sea
 			SearchEntries=entries(Group);
 	}
 	else
+	{
 		SearchEntries=entries();
+		for( int i=0; i<SearchEntries.size(); i++ )
+		{
+            SearchEntries[i]->setSearchPath(
+                ((EntryHandle*)SearchEntries[i])->group()->title()+
+                "/"+
+                SearchEntries[i]->title()
+            );
+		}
+	}
 
 	for(int i=0;i<SearchEntries.size();i++){
 		bool match=false;
@@ -1611,6 +1623,7 @@ QList<IEntryHandle*> Kdb3Database::search(IGroupHandle* Group,const QString& sea
 		Password.lock();
 		if(Fields[4])match=match||searchStringContains(search,SearchEntries[i]->comment(),CaseSensitive,RegExp);
 		if(Fields[5])match=match||searchStringContains(search,SearchEntries[i]->binaryDesc(),CaseSensitive,RegExp);
+		match=match||SearchEntries[i]->searchPath().contains(search,Qt::CaseInsensitive);
 		if(!match){
 			SearchEntries.removeAt(i);
 			i--;

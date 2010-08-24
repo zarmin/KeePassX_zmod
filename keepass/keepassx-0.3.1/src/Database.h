@@ -75,6 +75,7 @@ public:
 	quint32 GroupId;
 	quint32 Image;
 	QString Title;
+	QString SearchPath;
 	QString Url;
 	QString Username;
 	SecString Password;
@@ -112,6 +113,7 @@ public:
 	virtual void setImage(const quint32& ImageID)=0;
 	virtual void setOldImage(const quint32& OldImgID)=0;
 	virtual void setTitle(const QString& Title)=0;
+	virtual void setSearchPath(const QString& SearchPath)=0;
 	virtual void setUrl(const QString& URL)=0;
     virtual void setUsername(const QString& Username)=0;
 	virtual void setPassword(const SecString& Password)=0;
@@ -128,6 +130,7 @@ public:
 	virtual quint32 image()=0;
 	virtual quint32 oldImage()=0;
 	virtual QString title()=0;
+	virtual QString searchPath()=0;
 	virtual QString url()=0;
     virtual QString username()=0;
 	virtual SecString password()=0;
@@ -238,7 +241,7 @@ This is the common base interface for databases. Every database class must imple
 class IDatabase {
 public:
 	virtual ~IDatabase(){};
-	
+
 	virtual bool setKey(const QString& password,const QString& keyfile)=0;
 	virtual bool isKeyError()=0;
 
